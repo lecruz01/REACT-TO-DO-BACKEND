@@ -1,0 +1,31 @@
+{
+  "name": "react-to-do-backend",
+  "version": "1.0.0",
+  "description": "Backend para test react xcaret",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lecruz01/REACT-TO-DO-BACKEND.git"
+  },
+  "keywords": [
+    "backend",
+    "node",
+    "express",
+    "react",
+    "xcaret"
+  ],
+  "author": "Luis Cruz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lecruz01/REACT-TO-DO-BACKEND/issues"
+  },
+  "homepage": "https://github.com/lecruz01/REACT-TO-DO-BACKEND#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1"
+  }
+}
