@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Backend para test react xcaret",
   "scripts": {
-    "start": "node index.js"
+    "start:dev": "nodemon",
+    "build": "rimraf ./build && tsc",
+    "start": "npm run build && node build/index.js"
   },
   "repository": {
     "type": "git",
@@ -23,9 +25,22 @@
   },
   "homepage": "https://github.com/lecruz01/REACT-TO-DO-BACKEND#readme",
   "dependencies": {
+    "apollo-server-express": "^2.9.16",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "mongoose": "^5.8.11",
     "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.2",
+    "@types/mongoose": "^5.7.0",
+    "@types/morgan": "^1.7.37",
+    "@types/node": "^13.7.0",
+    "nodemon": "^2.0.2",
+    "rimraf": "^3.0.1",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
   }
 }
