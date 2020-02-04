@@ -1,34 +1,38 @@
 import Todo from "./models/todo";
 import Category from "./models/category";
+import uuid from "uuid/v1";
 
 const resolvers = {
   Query: {
-    getTodos: () =>
-      Todo.find((err, todos) => {
-        if (err) return console.error(err);
-        return todos;
-      }),
-    getTodo: () => {
-      Todo.find({ name: /^Tarea/ }, (err, todos) => {
+    getTodos: (_, args) => {
+      const { type } = args;
+      return Todo.find({ category: { name: type } }, (err, todos) => {
         if (err) return console.error(err);
         return todos;
       });
     },
-    getCategories: () =>
-      Category.find((err, categories) => {
+    getTodo: (_, args) => {
+      const { id } = args;
+      Todo.find({ id: id }, (err, todos) => {
         if (err) return console.error(err);
-        return categories;
-      })
+        return todos;
+      });
+    }
   },
   Mutation: {
-    addTodo: (root, args) => {
+    addTodo: async (_, args) => {
+      const { title, description, expirationDate, priority, category } = args;
+      const id = uuid();
       const newTodo = new Todo({
-        title: "Test Todo",
-        description: "Test Todo Description",
-        expirationDate: "10/02/2020",
+        id,
+        title,
+        description,
+        expirationDate,
         completed: false,
-        priority: 1,
-        category: "1"
+        priority,
+        category: {
+          name: category.name
+        }
       });
       newTodo.save((err, todo) => {
         if (err) return console.log("Todo failed to add");
@@ -36,8 +40,25 @@ const resolvers = {
       });
       return newTodo;
     },
-    addCategory: (root, args) => {
+    updateTodo: (_, args) => {
+      const { id } = args;
+      const updatedTodo = Todo.findOneAndUpdate(
+        { id },
+        { category: { name: "papelera" } },
+        { new: true }
+      );
+      return updatedTodo;
+    },
+    deleteTodo: (_, args) => {
+      const { id } = args;
+      return Todo.deleteOne({ id }, err => {
+        if (err) return false;
+        console.log(`Item with id ${id} was successfully removed from DB`);
+      });
+    },
+    addCategory: (_, args) => {
       const newCategory = new Category({
+        id: args.id,
         name: args.name
       });
       newCategory.save();

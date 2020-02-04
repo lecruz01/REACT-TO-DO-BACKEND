@@ -1,6 +1,10 @@
 import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
+  input CategoryInput {
+    name: String!
+  }
+
   type Todo {
     id: ID
     title: String!
@@ -8,29 +12,31 @@ const typeDefs = gql`
     expirationDate: String
     completed: Boolean
     priority: Int!
-    category: String!
+    category: Category!
   }
 
   type Category {
-    id: ID
-    name: String
+    id: ID!
+    name: String!
   }
 
   type Query {
-    getTodos: [Todo!]
+    getTodos(type: String): [Todo!]!
     getTodo(id: ID!): Todo
-    getCategories: [Category!]!
   }
 
   type Mutation {
     addTodo(
-      title: String
+      title: String!
       description: String
       expirationDate: String
-      completed: Boolean
-      priority: Int
-    ): Todo
-    addCategory(name: String): Category
+      completed: Boolean!
+      priority: Int!
+      category: CategoryInput!
+    ): Todo!
+    updateTodo(id: String!, data: [String]!): Todo!
+    deleteTodo(id: String): Todo!
+    addCategory(id: String, name: String): Category!
   }
 `;
 

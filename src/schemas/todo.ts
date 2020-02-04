@@ -9,8 +9,7 @@ const TodoSchema = new mongoose.Schema({
   priority: Number,
   category: {
     id: String,
-    name: String,
-    todos: Array
+    name: String
   }
 });
 
