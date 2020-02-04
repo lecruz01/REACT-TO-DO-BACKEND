@@ -29,11 +29,7 @@ const startServer = async () => {
   // Rutas
   apollo.applyMiddleware({
     app,
-    path: "/graphql",
-    cors: {
-      credentials: true,
-      origin: "http://localhost:3000"
-    }
+    path: "/graphql"
   });
 
   app.listen(PORT, () => {
