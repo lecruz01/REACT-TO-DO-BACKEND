@@ -39,40 +39,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var router = express_1.default.Router();
-var todos = require("../db/todoDb");
-var categories = require("../db/categories");
-router.get("/list", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var mongoose_1 = __importDefault(require("mongoose"));
+var mongoConnect = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var db;
     return __generator(this, function (_a) {
-        try {
-            res.status(200).json({
-                data: todos
-            });
-        }
-        catch (err) {
-            res.status(400).json({
-                message: "An error ocurred while processing this request",
-                err: err
-            });
-        }
-        return [2 /*return*/];
+        db = mongoose_1.default.connection;
+        db.on("error", console.error.bind(console, "connection error:"));
+        db.once("open", function () {
+            console.log("Mongoose connection opened");
+        });
+        return [2 /*return*/, mongoose_1.default.connect("mongodb://localhost/test", {
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            })];
     });
-}); });
-router.get("/categories", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        try {
-            res.status(200).json({
-                data: categories
-            });
-        }
-        catch (err) {
-            res.status(400).json({
-                message: "An error ocurred while processing this request",
-                err: err
-            });
-        }
-        return [2 /*return*/];
-    });
-}); });
-module.exports = router;
+}); };
+exports.default = mongoConnect;

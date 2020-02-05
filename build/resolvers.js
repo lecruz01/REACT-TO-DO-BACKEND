@@ -39,46 +39,74 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//Dependencias
-var express_1 = __importDefault(require("express"));
-var cors_1 = __importDefault(require("cors"));
-var body_parser_1 = __importDefault(require("body-parser"));
-var morgan_1 = __importDefault(require("morgan"));
-var apollo_server_express_1 = require("apollo-server-express");
-var connect_1 = __importDefault(require("./db/connect"));
-var typeDefs_1 = __importDefault(require("./typeDefs"));
-var resolvers_1 = __importDefault(require("./resolvers"));
-//Configuraciones
-var app = express_1.default();
-var PORT = process.env.PORT || 4000;
-var startServer = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var apollo;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                apollo = new apollo_server_express_1.ApolloServer({
-                    typeDefs: typeDefs_1.default,
-                    resolvers: resolvers_1.default
-                });
-                return [4 /*yield*/, connect_1.default()];
-            case 1:
-                _a.sent();
-                //Modulos
-                app.use(morgan_1.default("dev"));
-                app.use(cors_1.default());
-                app.use(/\/((?!graphql).)*/, body_parser_1.default.urlencoded({ extended: true }));
-                app.use(/\/((?!graphql).)*/, body_parser_1.default.json());
-                // Rutas
-                apollo.applyMiddleware({
-                    app: app,
-                    path: "/graphql"
-                });
-                app.listen(PORT, function () {
-                    console.log("Project running on port: " + PORT + apollo.graphqlPath);
-                });
-                return [2 /*return*/];
+var todo_1 = __importDefault(require("./models/todo"));
+var category_1 = __importDefault(require("./models/category"));
+var v1_1 = __importDefault(require("uuid/v1"));
+var resolvers = {
+    Query: {
+        getTodos: function (_, args) {
+            var type = args.type;
+            return todo_1.default.find({ category: { name: type } }, function (err, todos) {
+                if (err)
+                    return console.error(err);
+                return todos;
+            });
+        },
+        getTodo: function (_, args) {
+            var id = args.id;
+            todo_1.default.find({ id: id }, function (err, todos) {
+                if (err)
+                    return console.error(err);
+                return todos;
+            });
         }
-    });
-}); };
-startServer();
-module.exports = app;
+    },
+    Mutation: {
+        addTodo: function (_, args) { return __awaiter(void 0, void 0, void 0, function () {
+            var title, description, expirationDate, priority, category, id, newTodo;
+            return __generator(this, function (_a) {
+                title = args.title, description = args.description, expirationDate = args.expirationDate, priority = args.priority, category = args.category;
+                id = v1_1.default();
+                newTodo = new todo_1.default({
+                    id: id,
+                    title: title,
+                    description: description,
+                    expirationDate: expirationDate,
+                    completed: false,
+                    priority: priority,
+                    category: {
+                        name: category.name
+                    }
+                });
+                newTodo.save(function (err, todo) {
+                    if (err)
+                        return console.log("Todo failed to add");
+                    console.log("Todo Added", todo);
+                });
+                return [2 /*return*/, newTodo];
+            });
+        }); },
+        updateTodo: function (_, args) {
+            var id = args.id;
+            var updatedTodo = todo_1.default.findOneAndUpdate({ id: id }, { category: { name: "papelera" } }, { new: true });
+            return updatedTodo;
+        },
+        deleteTodo: function (_, args) {
+            var id = args.id;
+            return todo_1.default.deleteOne({ id: id }, function (err) {
+                if (err)
+                    return false;
+                console.log("Item with id " + id + " was successfully removed from DB");
+            });
+        },
+        addCategory: function (_, args) {
+            var newCategory = new category_1.default({
+                id: args.id,
+                name: args.name
+            });
+            newCategory.save();
+            return newCategory;
+        }
+    }
+};
+exports.default = resolvers;

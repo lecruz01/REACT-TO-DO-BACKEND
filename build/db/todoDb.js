@@ -12,14 +12,14 @@ module.exports = [
         expirationDate: "28/02/2020",
         title: "quis ut nam facilis et officia qui",
         completed: false,
-        priority: 1
+        priority: 2
     },
     {
         id: 3,
         expirationDate: "28/02/2020",
         title: "fugiat veniam minus",
         completed: false,
-        priority: 1
+        priority: 3
     },
     {
         id: 4,
@@ -33,7 +33,7 @@ module.exports = [
         expirationDate: "28/02/2020",
         title: "laboriosam mollitia et enim quasi adipisci quia provident illum",
         completed: false,
-        priority: 1
+        priority: 2
     },
     {
         id: 6,
@@ -47,27 +47,27 @@ module.exports = [
         expirationDate: "28/02/2020",
         title: "illo expedita consequatur quia in",
         completed: false,
-        priority: 1
+        priority: 2
     },
     {
         id: 8,
         expirationDate: "28/02/2020",
         title: "quo adipisci enim quam ut ab",
         completed: true,
-        priority: 1
+        priority: 4
     },
     {
         id: 9,
         expirationDate: "28/02/2020",
         title: "molestiae perspiciatis ipsa",
         completed: false,
-        priority: 1
+        priority: 3
     },
     {
         id: 10,
         expirationDate: "28/02/2020",
         title: "illo est ratione doloremque quia maiores aut",
         completed: true,
-        priority: 1
+        priority: 4
     }
 ];

@@ -29,3 +29,11 @@ Despues para iniciar el servidor en modo desarrollo usaremos el comando:
 ``` bash
 npm run start
 ```
+
+## Playground local
+
+Si deseamos accesar al playground local de Apollo y GraphQL, en nuestro navegador nos dirijiremos a la URL.
+
+```bash
+http://localhost:4000/graphql
+```
